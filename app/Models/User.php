@@ -45,4 +45,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function specsWithRoles()
+    {
+        return $this->belongsToMany(Spec::class, 'spec_role_user')->withPivot('role_id');
+    }
+
+
+    public function specs()
+    {
+        return $this->belongsToMany(Spec::class, 'spec_role_user');
+    }
 }
