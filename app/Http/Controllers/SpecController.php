@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Spec;
+use App\Models\SpecRow;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,8 +28,10 @@ class SpecController extends Controller
 
     public function view(Request $request, $id)
     {
-        $specs = $id;
-        return view('specs.view', compact('specs'));
+
+        $spec = auth()->user()->specs->find($id);
+        $rows = auth()->user()->specs->where('id', $id)->first()->rows()->get();
+        return view('specs.view', compact('spec', 'rows'));
     }
 
     public function create(Request $request)
@@ -37,17 +39,21 @@ class SpecController extends Controller
         return view('specs.form');
     }
 
-    public function store(Request $request)
+    public function storeRows(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            // Add any other fields you want to validate here
+            'content' => 'required|string|max:255',
         ]);
 
-        Spec::create($validatedData);
+        //is user allowed to edit current spec
+        //Find user is related to spec via spec_user_role
 
-        // After creation, you might want to redirect or show a success message
-        return redirect()->route('dashboard')->with('status', 'Spec created successfully!');
+        SpecRow::create($validatedData);
+
+        $id = 1; // should be id of just updated spec
+        $spec = auth()->user()->specs->find($id);
+        $rows = auth()->user()->specs->where('id', $id)->first()->rows()->get();
+        return view('specs.view', compact('spec', 'rows'));
     }
 
     // public function edit(Request $request): View

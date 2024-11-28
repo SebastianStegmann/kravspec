@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpecController;
 
 Route::middleware('auth')->group(function () {
-    Route::get('/specs/{id}', [SpecController::class, 'view'])->name('specs.view');
     Route::get('/specs', [SpecController::class, 'index'])->name('specs.index');
     Route::get('/specs/create', [SpecController::class, 'create'])->name('specs.create');
-    Route::post('/specs', [SpecController::class, 'store'])->name('specs.store');
+    Route::get('/specs/{id}', [SpecController::class, 'view'])->name('specs.view');
+    Route::post('/spec-rows', [SpecController::class, 'storeRows'])->name('specs.store_rows');
 });
 
 Route::get('/', function () {
