@@ -15,17 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('content');
             $table->integer('row_identifier');
-            $table->unsignedBigInteger('spec_id');
-            $table->string('priority')->default('0'); // Changed to string to allow letters
-            $table->string('version')->nullable();
-            $table->timestamp('accepted_at')->nullable();
+            $table->foreignId('spec_id')->index()->constrained('specs')->onDelete('cascade');
+            $table->string('priority')->default('M'); // Changed to string to allow letters
+            $table->string('version')->default('1');
+            $table->unsignedBigInteger('accepted_at')->default(0);
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('spec_id')->references('id')->on('specs')->onDelete('cascade');
+
+            $table->index(['spec_id', 'row_identifier']);
         });
     }
 
+    // $table->foreign('spec_id')->references('id')->on('specs')->onDelete('cascade');
     /**
      * Reverse the migrations.
      */

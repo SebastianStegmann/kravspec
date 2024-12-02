@@ -34,15 +34,18 @@ class SpecController extends Controller
         return view('specs.view', compact('spec', 'rows'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $spec_id)
     {
-        return view('specs.form');
+        return view('specs.form', compact('spec_id'));
     }
 
     public function storeRows(Request $request)
     {
         $validatedData = $request->validate([
-            'content' => 'required|string|max:255',
+            'content' => 'required',
+            'spec_id' => 'required',
+            'priority' => 'required',
+            'version' => '',
         ]);
 
         //is user allowed to edit current spec
@@ -50,9 +53,10 @@ class SpecController extends Controller
 
         SpecRow::create($validatedData);
 
-        $id = 1; // should be id of just updated spec
-        $spec = auth()->user()->specs->find($id);
-        $rows = auth()->user()->specs->where('id', $id)->first()->rows()->get();
+        $spec_id = $validatedData['spec_id'];
+
+        $spec = auth()->user()->specs->find($spec_id);
+        $rows = auth()->user()->specs->where('id', $spec_id)->first()->rows()->get();
         return view('specs.view', compact('spec', 'rows'));
     }
 

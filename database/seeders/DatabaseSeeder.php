@@ -34,9 +34,41 @@ class DatabaseSeeder extends Seeder
             DB::table('roles')->insert($role);
         }
 
-        // Spec::factory()->count(10)->create();
-        Spec::factory()
-            ->count(5)
-            ->create();
+        // Ensure there are Specs to associate with SpecRows
+        $specs = Spec::factory()->count(5)->create();
+
+        // Create new rows for each Spec
+        $specs->each(function ($spec) {
+            $newRows = SpecRow::factory()
+                ->count(2)
+                ->newRow()
+                ->create(['spec_id' => $spec->id]);
+
+            // Create new versions for the newly created rows
+            $newRows->each(function ($row) {
+                $versionsToCreate = rand(1, 3);
+                for ($i = 0; $i < $versionsToCreate; $i++) {
+                    SpecRow::factory()
+                        ->newVersion()
+                        ->create([
+                            'spec_id' => $row->spec_id,
+                            'row_identifier' => $row->row_identifier,
+                        ]);
+                }
+            });
+        });
+
+
+        $spec_role_user = [
+            ['id' => 1, 'user_id' => 1, 'spec_id' => 1, 'role_id' => 1],
+            ['id' => 2, 'user_id' => 1, 'spec_id' => 2, 'role_id' => 1],
+            ['id' => 3, 'user_id' => 1, 'spec_id' => 3, 'role_id' => 1],
+            ['id' => 4, 'user_id' => 1, 'spec_id' => 4, 'role_id' => 1],
+            ['id' => 5, 'user_id' => 1, 'spec_id' => 5, 'role_id' => 1],
+        ];
+
+        foreach ($spec_role_user as $sru) {
+            DB::table('spec_role_user')->insert($sru);
+        }
     }
 }

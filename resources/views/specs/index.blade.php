@@ -1,10 +1,7 @@
-<div id="specs-container">
+<div class="" id="specs-container">
     <h1> Your specifactions </h1>
     @foreach ($specs as $spec)
-    <!-- <a href="/specs/{{$spec->id}}">Name: -->
-    <!--     {{$spec->name}} -->
-    <!-- </a> -->
-    <div hx-get="/specs/{{$spec->id}}" hx-trigger="click" hx-target="#specs-container" hx-swap="outerHTML">
+    <div class="text-gray-600" hx-get="/specs/{{$spec->id}}" hx-trigger="click" hx-target="#specs-container" hx-swap="outerHTML">
         Name: {{$spec->name}}
     </div>
 

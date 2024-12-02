@@ -24,11 +24,11 @@ class SpecFactory extends Factory
         ];
     }
 
-    public function configure()
-    {
-        return $this->afterCreating(function (Spec $spec) {
-            // Create 10 SpecRow instances for each Spec
-            SpecRow::factory()->count(10)->create(['spec_id' => $spec->id]);
-        });
-    }
+    // public function configure()
+    // {
+    //     return $this->afterCreating(function (Spec $spec) {
+    //         // Create 10 SpecRow instances for each Spec
+    //         SpecRow::factory()->count(10)->create(['spec_id' => $spec->id]);
+    //     });
+    // }
 }

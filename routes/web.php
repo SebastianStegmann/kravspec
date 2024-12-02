@@ -6,7 +6,7 @@ use App\Http\Controllers\SpecController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/specs', [SpecController::class, 'index'])->name('specs.index');
-    Route::get('/specs/create', [SpecController::class, 'create'])->name('specs.create');
+    Route::get('/specs/create/{spec_id}', [SpecController::class, 'create'])->name('specs.create');
     Route::get('/specs/{id}', [SpecController::class, 'view'])->name('specs.view');
     Route::post('/spec-rows', [SpecController::class, 'storeRows'])->name('specs.store_rows');
 });
