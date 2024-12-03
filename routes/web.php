@@ -3,12 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpecController;
+use App\Http\Controllers\SpecRowController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/specs', [SpecController::class, 'index'])->name('specs.index');
     Route::get('/specs/create/{spec_id}', [SpecController::class, 'create'])->name('specs.create');
-    Route::get('/specs/{id}', [SpecController::class, 'view'])->name('specs.view');
-    Route::post('/spec-rows', [SpecController::class, 'storeRows'])->name('specs.store_rows');
+    Route::get('/specs/{id}', [SpecRowController::class, 'view'])->name('specs.view');
+    Route::post('/spec-rows', [SpecRowController::class, 'store'])->name('specs.store_rows');
+    // Route::put('/spec-rows', [SpecRowController::class, 'edit'])->name('specs.edit_rows');
 });
 
 Route::get('/', function () {
