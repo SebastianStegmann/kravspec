@@ -18,10 +18,14 @@
         });
     }
 </script>
+
 <div id="specs-container">
     <a href="#" hx-get="/specs" hx-swap="outerHTML" hx-target="#specs-container"><-- Go back to all specs</a>
             <a href="#" hx-get="/suggestions/{{$spec->id}}" hx-swap="outerHTML" hx-target="#specs-container"><-- View suggestions</a>
                     <h1> Viewing spec: {{$spec->name}}</h1>
+                    @if ($time)
+                    Showing state of {{$spec->name}} at time: {{date( 'Y-m-d H:i:s',$time)}}
+                    @endif
                     <table id="spec-table">
                         <thead class="bg-gray-50">
                             <tr class="border-b">
@@ -84,14 +88,38 @@
 
                     <section>
                         <h2> Timeline of changes </h2>
+
+                        @if ($time != null)
+                        <a hx-get="/spec-rows/{{$spec->id}}" hx-trigger="click" hx-swap="outerHTML" hx-target="#specs-container">Back to current {{$spec->name}}</a>
+                        @endif
                         <p> Click to view older states</p>
-                        @forelse($timeline as $key => $occurance)
+                        <ul>
+                            @forelse($timeline as $key => $occurance)
 
+                            <li>
+                                @if ($loop->first)
+                                0
+                                @endif
 
-                        {{date( 'Y-m-d H:i:s',$occurance)}}
-                        @empty
+                                @if ($loop->last)
+                                0
+                                @endif
 
-                        @endforelse
+                                @if (!$loop->last && !$loop->first)
+                                |
+                                @endif
+
+                                <a hx-get="/spec-rows/{{$spec->id}}/{{$occurance}}" hx-trigger="click" hx-swap="outerHTML" hx-target="#specs-container">{{date( 'Y-m-d H:i:s',$occurance)}}</a>
+
+                                @if ($time == $occurance)
+
+                                here
+                                @endif
+                            </li>
+                            @empty
+
+                            @endforelse
+                        </ul>
                     </section>
 
 </div>

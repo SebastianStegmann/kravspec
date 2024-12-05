@@ -9,7 +9,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/specs', [SpecController::class, 'index'])->name('specs.index');
     Route::get('/specs/{id}', [SpecController::class, 'view'])->name('specs.view');
     // Route::get('/spec-rows/create/{spec_id}', [SpecController::class, 'create'])->name('specs-rows.create');
-    Route::get('/spec-rows/{id}', [SpecRowController::class, 'view'])->name('specs-rows.index');
+    Route::get('/spec-rows/{id}/{time?}', [SpecRowController::class, 'view'])->name('specs-rows.index');
     Route::post('/spec-rows', [SpecRowController::class, 'store'])->name('specs-rows.store_rows');
     Route::get('/suggestions/{id}', [SpecRowController::class, 'suggestions'])->name('specs.suggestions');
 });

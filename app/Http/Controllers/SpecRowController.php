@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class SpecRowController extends Controller
 {
 
-    public function view(Request $request, $id)
+    public function view(Request $request, $id, $time = null)
     {
 
         $spec = Auth::user()->specs->find($id);
@@ -18,9 +18,13 @@ class SpecRowController extends Controller
             abort(404);
         }
 
-        $rows = $spec->getGroupedLatestRows();
+        if (!$time) {
+            $rows = $spec->getGroupedLatestRows();
+        } else {
+            $rows = $spec->GetGroupedRowsByTime($time);
+        }
         $timeline = $spec->fetchTimelineOfAcceptedChanges();
-        return view('spec-rows.index', compact('spec', 'rows', 'timeline'));
+        return view('spec-rows.index', compact('spec', 'rows', 'timeline', 'time'));
     }
 
     public function suggestions(Request $request, $id)

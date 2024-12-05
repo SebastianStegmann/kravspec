@@ -54,6 +54,30 @@ class Spec extends Model
         return $result;
     }
 
+
+    public function GetGroupedRowsByTime($time)
+    {
+        $allRows = $this->rows()->get();
+
+        $groupedRows = $allRows->groupBy('row_identifier');
+
+        $result = collect();
+        foreach ($groupedRows as $identifier => $allRows) {
+            $latestRow = $allRows->whereNull('deleted_at')
+                ->whereNotNull('accepted_at')
+                ->where('accepted_at', '!=', 0)
+                ->where('accepted_at', '<=', $time)
+                ->sortByDesc('accepted_at')
+                ->first();
+
+            if ($latestRow) {
+                $result->put($identifier, $latestRow);
+            }
+        }
+
+        return $result;
+    }
+
     public function getGroupedLatestRows()
     {
         $allRows = $this->rows()->get();
