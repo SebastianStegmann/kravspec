@@ -21,6 +21,7 @@ class SpecFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
+            'status' => false,
         ];
     }
 

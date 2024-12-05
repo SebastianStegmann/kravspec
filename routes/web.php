@@ -7,10 +7,11 @@ use App\Http\Controllers\SpecRowController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/specs', [SpecController::class, 'index'])->name('specs.index');
-    Route::get('/specs/create/{spec_id}', [SpecController::class, 'create'])->name('specs.create');
-    Route::get('/specs/{id}', [SpecRowController::class, 'view'])->name('specs.view');
-    Route::post('/spec-rows', [SpecRowController::class, 'store'])->name('specs.store_rows');
-    // Route::put('/spec-rows', [SpecRowController::class, 'edit'])->name('specs.edit_rows');
+    Route::get('/specs/{id}', [SpecController::class, 'view'])->name('specs.view');
+    // Route::get('/spec-rows/create/{spec_id}', [SpecController::class, 'create'])->name('specs-rows.create');
+    Route::get('/spec-rows/{id}', [SpecRowController::class, 'view'])->name('specs-rows.index');
+    Route::post('/spec-rows', [SpecRowController::class, 'store'])->name('specs-rows.store_rows');
+    Route::get('/suggestions/{id}', [SpecRowController::class, 'suggestions'])->name('specs.suggestions');
 });
 
 Route::get('/', function () {

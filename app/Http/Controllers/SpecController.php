@@ -25,4 +25,16 @@ class SpecController extends Controller
         // $specs = Spec::all();
         return view('specs.index', compact('specs'));
     }
+
+    public function view(Request $request, $id)
+    {
+
+        $spec = auth()->user()->specs->find($id);
+        $users = $spec->usersWithRoles()->get();
+        return view('specs.view', compact('spec', 'users'));
+    }
+
+    public function update(Request $request)
+    {
+    }
 }
